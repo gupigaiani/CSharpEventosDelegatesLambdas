@@ -29,6 +29,8 @@
         Console.WriteLine("2. Depositar valores");
         Console.WriteLine("3. Sacar valores");
         Console.WriteLine("4. Extrato");
+        Console.WriteLine("5. Depositar e obter saldo");
+        Console.WriteLine("6. Sacar e obter saldo");
         Console.WriteLine();
         Console.Write("Digite o número da opção desejada: ");
     }
@@ -48,6 +50,12 @@
                 break;
             case 4:
                 Extrato();
+                break;
+            case 5:
+                DepositarEObterSaldo();
+                break;
+            case 6:
+                SacarEObterSaldo();
                 break;
 
             default:
@@ -76,12 +84,37 @@
         ExecutarTransacaoBancaria(caixaEletronico.Depositar, 25);
     }
 
+    private static void DepositarEObterSaldo()
+    {
+        TransacaoBancaria transacao = delegate (decimal valor)
+        {
+            caixaEletronico.Depositar(valor);
+            caixaEletronico.Saldo();
+        };
+
+        transacao(100);
+        transacao(40);
+        transacao(25);
+    }
+
     private static void Sacar()
     {
         //caixaEletronico.Sacar(50);
         //caixaEletronico.Sacar(20);
         ExecutarTransacaoBancaria(caixaEletronico.Sacar, 50);
         ExecutarTransacaoBancaria(caixaEletronico.Sacar, 20);
+    }
+
+    private static void SacarEObterSaldo()
+    {
+        TransacaoBancaria transacao = delegate (decimal valor)
+        {
+            caixaEletronico.Sacar(valor);
+            caixaEletronico.Saldo();
+        };
+
+        transacao(50);
+        transacao(20);
     }
 
     private static void Extrato()
