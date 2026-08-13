@@ -31,6 +31,7 @@
         Console.WriteLine("4. Extrato");
         Console.WriteLine("5. Depositar e obter saldo");
         Console.WriteLine("6. Sacar e obter saldo");
+        Console.WriteLine("7. Depositar, aplicar na poupança e obter saldo");
         Console.WriteLine();
         Console.Write("Digite o número da opção desejada: ");
     }
@@ -56,6 +57,9 @@
                 break;
             case 6:
                 SacarEObterSaldo();
+                break;
+            case 7:
+                DepositarEAplicarPoupancaEObterSaldo();
                 break;
 
             default:
@@ -131,5 +135,38 @@
     private static void ExecutarTransacaoBancaria(TransacaoBancaria transacaoBancaria, decimal valor)
     {
         transacaoBancaria(valor);
+    }
+
+    private static void DepositarEAplicarPoupancaEObterSaldo()
+    {
+        TransacaoBancaria depositar = caixaEletronico.Depositar;
+        depositar(50);
+        Console.WriteLine("Delegate 'depositar' executado com sucesso!");
+        Console.WriteLine();
+
+        TransacaoBancaria aplicar = caixaEletronico.AplicarPoupanca;
+        aplicar(50);
+        Console.WriteLine("Delegate 'aplicar' executado com sucesso!");
+        Console.WriteLine();
+
+        TransacaoBancaria saldo = delegate (decimal valor) 
+        { 
+            caixaEletronico.Saldo(); 
+        };
+
+        saldo(50);
+        Console.WriteLine("Delegate 'saldo' executado com sucesso!");
+        Console.WriteLine();
+
+        TransacaoBancaria depositarAplicarSaldo = depositar + aplicar + saldo;
+        depositarAplicarSaldo(50);
+        Console.WriteLine("Delegate multicast 'depositarAplicarSaldo' executado com sucesso!");
+        Console.WriteLine();
+
+        // TransacaoBancaria aplicarSaldo = aplicar + saldo;
+        TransacaoBancaria aplicarSaldo = depositarAplicarSaldo - depositar;
+        aplicarSaldo(50);
+        Console.WriteLine("Delegate multicast 'aplicarSaldo' executado com sucesso!");
+        Console.WriteLine();
     }
 }
