@@ -1,11 +1,12 @@
-﻿public delegate void SaldoInsuficienteEventHandler();
+﻿// public delegate void SaldoInsuficienteEventHandler();
 
-public class CaixaEletronico
+public class CaixaEletronico : ICaixaEletronico
 {
     private const int LarguraExtrato = 80;
     private decimal saldo;
     private List<ItemExtrato> itensExtrato = new();
-    public event SaldoInsuficienteEventHandler OnSaldoInsuficiente;
+    // public event SaldoInsuficienteEventHandler OnSaldoInsuficiente;
+    public event EventHandler OnSaldoInsuficiente;
 
     public CaixaEletronico()
     {
@@ -18,7 +19,7 @@ public class CaixaEletronico
             Sinal = SinalOperacao.Credito
         };
         itensExtrato.Add(item);
-        OnSaldoInsuficiente += MostrarSaldoInsuficiente;
+        // OnSaldoInsuficiente += MostrarSaldoInsuficiente;
     }
 
     public void Saldo()
@@ -60,7 +61,7 @@ public class CaixaEletronico
         if (valor > saldo)
         {
             // MostrarSaldoInsuficiente();
-            OnSaldoInsuficiente?.Invoke();
+            OnSaldoInsuficiente?.Invoke(this, new EventArgs());
         }
         else
         {
@@ -89,7 +90,7 @@ public class CaixaEletronico
         if (valor > saldo)
         {
             // MostrarSaldoInsuficiente();
-            OnSaldoInsuficiente?.Invoke();
+            OnSaldoInsuficiente?.Invoke(this, new EventArgs());
         }
         else
         {
