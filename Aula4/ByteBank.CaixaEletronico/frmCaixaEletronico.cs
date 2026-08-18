@@ -28,6 +28,11 @@
                 WriteToConsole("Saldo insuficiente!");
             };
 
+            caixaEletronico.OnLimiteUtilizado += (sender, e) =>
+            {
+                WriteToConsole($"Atenção! Você está utilizando o limite disponível para sua conta!");
+            };
+
             ImprimirLogo();
 
             btnSacar.Click += BtnSacar_Click;
@@ -91,7 +96,7 @@
 
         private void BtnSaldo_Click(object sender, EventArgs e)
         {
-            decimal saldo = caixaEletronico.Saldo();
+            decimal saldo = caixaEletronico.Saldo;
             WriteToConsole($"Saldo atual: {saldo:C}");
         }
 
