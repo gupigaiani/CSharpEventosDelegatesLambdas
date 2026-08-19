@@ -139,9 +139,16 @@ namespace ByteBank.WebApi.Controllers
             if (contaCorrente == null)
                 return NotFound();
 
-            var items = ItemsExtrato.Where(ie => ie.Agencia == agencia && ie.Conta == conta)
-                .OrderBy(ie => ie.Data)
-                .ToList();
+            //var items = ItemsExtrato.Where(ie => ie.Agencia == agencia && ie.Conta == conta)
+            //    .OrderBy(ie => ie.Data)
+            //    .ToList();
+
+            var query = from ie in ItemsExtrato
+                        where ie.Agencia == agencia && ie.Conta == conta
+                        orderby ie.Data
+                        select ie;
+
+            var items = query.ToList();
 
             var extratoBancario = new ExtratoBancario(items, contaCorrente.Saldo);
 
@@ -153,7 +160,14 @@ namespace ByteBank.WebApi.Controllers
             // 2. filtrar a coleção por agência e por conta
             // 3. obter um único elemento resultante, ou valor default (null)
             // 4. retornar a conta corrente encontrada, ou null
-            return ContasCorrentes.Where(cc => cc.Agencia == agencia && cc.Conta == conta).SingleOrDefault();
+
+            //return ContasCorrentes.Where(cc => cc.Agencia == agencia && cc.Conta == conta).SingleOrDefault();
+
+            var query = from cc in ContasCorrentes 
+                        where cc.Agencia == agencia && cc.Conta == conta 
+                        select cc;
+
+            return query.SingleOrDefault();
         }
     }
 }
